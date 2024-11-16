@@ -126,7 +126,7 @@ static void recv_prase(char *p_msg)
     out[message_len] = '\0';
 
     // Create a JSON document of specified capacity <100> and load the byteArray to it
-    StaticJsonDocument<100> doc;
+    JsonDocument doc;
     deserializeJson(doc, out);
 
     // Print the received JSON message by serializing it
@@ -146,9 +146,9 @@ void blinkLed()
 {
   for (int i = 0; i < 5; i++)
   {
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(led, HIGH);
     delay(200);
-    digitalWrite(ledPin, LOW);
+    digitalWrite(led, LOW);
     delay(200);
   }
 }
@@ -239,7 +239,7 @@ void theftDetectionTask(void *parameters)
     if (diffX > movementThreshold || diffY > movementThreshold || diffZ > movementThreshold)
     {
       Serial.println("Movement detected! Triggering anti-theft alert...");
-      //      blinkLed(); // Blink LED as an alert
+      blinkLed(); // Blink LED as an alert
     }
 
     // Update the previous values
@@ -353,7 +353,7 @@ void setup(void)
     at_send_check_response("+DR: US915", 1000, "AT+DR=US915\r\n");
     at_send_check_response("+DR: DR2", 1000, "AT+DR=DR2\r\n"); // Set data rate to DR1
     at_send_check_response("+CH: NUM", 1000, "AT+CH=NUM,8-15\r\n");
-    at_send_check_response("+KEY: APPKEY", 1000, "AT+KEY=APPKEY,\"AF84F4710741A1B4E0CD33220E81290B\"\r\n");
+    at_send_check_response("+KEY: APPKEY", 1000, "AT+KEY=APPKEY,\"AA16EE08BEC2BE9885EC404C977A14A9\"\r\n");
     at_send_check_response("+CLASS: C", 1000, "AT+CLASS=A\r\n");
     at_send_check_response("+PORT: 8", 1000, "AT+PORT=8\r\n");
     delay(1000);
@@ -521,7 +521,7 @@ void loop(void)
         strcat(cmd, compositionBuffer);
         strcat(cmd, "\"\r\n");
         ret = at_send_check_response("Done", 5000, cmd);
-        //err = "";
+        err = "";
 
         if (ret) {
           recv_prase(recv_buf);
